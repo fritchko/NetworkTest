@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,12 +41,21 @@ class FirstFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
+
         binding.submitButton.setOnClickListener {
             catViewModel.networkCall()
         }
 
         catViewModel.result.observe(viewLifecycleOwner){
             setCatText(it)
+        }
+
+        catViewModel.isLoading.observe(viewLifecycleOwner){
+            if(it){
+                binding.networkLoading.visibility = View.VISIBLE
+            } else {
+                binding.networkLoading.visibility = View.GONE
+            }
         }
 
     }
