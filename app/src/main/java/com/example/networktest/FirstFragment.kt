@@ -11,17 +11,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.networktest.databinding.FragmentFirstBinding
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+//TODO: INSTANZIAMO IL ViewModel DENTRO AL FRAGMENT SCRIVENDO
+// *NOMEViewModel*: *ViewModelCREATO* by activityViewModels()
+// SE USIAMO IL ViewModel SOLAMENTE IN UNA SCHERMATA METTIAMO viewModels()
+// SE INVECE LO USIAMO IN PIU' SCHERMATE ANDREMO A METTERE activityViewModels()
+// PERCHE' ANDRA' AD IMPATTARE QUANTA MEMORIA UTILIZZA L'APP
+
 class FirstFragment : Fragment() {
 
-    private val catViewModel: CatViewModel by viewModels()
+    private val catViewModel: CatViewModel by activityViewModels()
 
     private var _binding: FragmentFirstBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -46,6 +46,11 @@ class FirstFragment : Fragment() {
             catViewModel.networkCall()
         }
 
+        //TODO: CHIAMIAMO IL MutableLiveData PRESENTE NEL ViewModel E SETTIAMO UN OBSERVE.
+        // IL CONTENUTO DELLA FUNZIONE VERRA' ESEGUITO OGNI QUALVOLTA IL CONTENUTO DELLA LIVE DATA CAMBIA
+        // VA SPECIFICATO viewLifecycleOwner PERCHE' COSI' L'OBSERVE CAPISCE QUANDO IL FRAGMENT NON E'
+        // PIU' VISUALIZZATO A SCHERMO E SMETTE DI OSSERVARE.
+
         catViewModel.result.observe(viewLifecycleOwner){
             setCatText(it)
         }
@@ -59,6 +64,8 @@ class FirstFragment : Fragment() {
         }
 
     }
+
+    //TODO: E' ALTAMENTE CONSIGLIATO CREARE DELLE FUNZIONI APPOSITE PER PULIZIA DEL CODICE
 
     private fun setCatText(it: CatData){
         binding.textviewFact.text = it.fact
